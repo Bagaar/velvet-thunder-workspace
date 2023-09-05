@@ -29,7 +29,8 @@
     "start": "ember serve",
     "tailwind:build": "tailwindcss -i ./docs-styles/index.css -o ./tests/dummy/public/assets/tailwind.css --minify",
     "tailwind:watch": "tailwindcss -i ./docs-styles/index.css -o ./tests/dummy/public/assets/tailwind.css --watch",
-    "test": "concurrently \"npm:lint\" \"npm:test:*\" --names \"lint,test:\"",
+    "//test": "concurrently \"npm:lint\" \"npm:test:*\" --names \"lint,test:\"",
+    "test": "ember test",
     "test:ember": "ember test",
     "test:ember-compatibility": "ember try:each"
   },
@@ -118,6 +119,7 @@
     "ember-source": "^4.0.0",
     "tailwindcss": "^3.0.0"
   },
+  "packageManager": "pnpm@8.6.11",
   "engines": {
     "node": "14.* || 16.* || >= 18"
   },

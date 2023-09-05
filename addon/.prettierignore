@@ -1,0 +1,9 @@
+# Folders:
+/.node_modules.ember-try/
+/dist/
+
+# Files:
+/pnpm-lock.ember-try.yaml
+/pnpm-lock.yaml
+/tests/dummy/public/assets/*.css
+*.html
