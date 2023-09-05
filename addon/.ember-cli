@@ -1,0 +1,6 @@
+{
+  "componentStructure": "nested",
+  "disableAnalytics": false,
+  "isTypeScriptProject": true,
+  "lintFix": false
+}

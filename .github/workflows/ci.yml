@@ -1,0 +1,101 @@
+name: CI
+
+on:
+  push:
+    branches:
+      - main
+  pull_request: {}
+
+concurrency:
+  group: ci-${{github.head_ref || github.ref}}
+  cancel-in-progress: true
+
+jobs:
+  test:
+    name: Tests
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Lint
+        run: pnpm lint
+        working-directory: addon
+      - name: Build Tailwind
+        run: pnpm tailwind:build
+        working-directory: addon
+      - name: Run Tests
+        if: ${{contains(github.event.*.labels.*.name, 'percy') == false}}
+        run: pnpm test:ember
+        working-directory: addon
+      - name: Run Tests With Percy
+        if: ${{contains(github.event.*.labels.*.name, 'percy')}}
+        run: pnpx percy exec -- pnpm test:ember
+        working-directory: addon
+        env:
+          PERCY_TOKEN: ${{secrets.PERCY_TOKEN}}
+
+  floating:
+    name: Floating Dependencies
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Install Dependencies
+        run: pnpm install --no-lockfile
+      - name: Build Tailwind
+        run: pnpm tailwind:build
+        working-directory: addon
+      - name: Run Tests
+        run: pnpm test:ember
+        working-directory: addon
+
+  try-scenarios:
+    name: Scenario - ${{matrix.try-scenario}}
+    runs-on: ubuntu-latest
+    needs: test
+    timeout-minutes: 10
+
+    strategy:
+      fail-fast: false
+      matrix:
+        try-scenario:
+          - ember-lts-4.4
+          - ember-lts-4.8
+          - ember-release
+          - ember-beta
+          - ember-canary
+          - embroider-safe
+          - embroider-optimized
+
+    steps:
+      - uses: actions/checkout@v3
+      - uses: actions/setup-node@v3
+        with:
+          node-version: 18.x
+      - uses: pnpm/action-setup@v2
+        with:
+          version: 8
+      - name: Install Dependencies
+        run: pnpm install
+      - name: Build Tailwind
+        run: pnpm tailwind:build
+        working-directory: addon
+      - name: Run Tests
+        run: ./node_modules/.bin/ember try:one ${{matrix.try-scenario}}
+        working-directory: addon

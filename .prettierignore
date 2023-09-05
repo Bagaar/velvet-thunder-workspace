@@ -1,0 +1,9 @@
+# Folders:
+dist/
+
+# Files:
+/pnpm-lock.yaml
+
+# TODO:
+/addon/**/*.html
+/addon/tests/dummy/public/assets/*.css

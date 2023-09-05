@@ -1,0 +1,27 @@
+# See https://help.github.com/ignore-files/ for more about ignoring files.
+
+# compiled output
+/dist/
+/tests/dummy/public/assets/tailwind.css
+
+# dependencies
+/node_modules/
+
+# misc
+/.env*
+/.pnp*
+/.sass-cache
+/.eslintcache
+/connect.lock
+/coverage/
+/libpeerconnection.log
+/pnpm-debug.log
+/testem.log
+
+# ember-try
+/.node_modules.ember-try/
+/package.json.ember-try
+/pnpm-lock.ember-try.yaml
+
+# broccoli-debug
+/DEBUG/
