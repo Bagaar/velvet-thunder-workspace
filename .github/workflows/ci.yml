@@ -29,7 +29,7 @@ jobs:
       - run: pnpm test
     timeout-minutes: 10
 
-  floating:
+  test-no-lockfile:
     needs: lint
     runs-on: ubuntu-latest
     steps:
@@ -38,6 +38,31 @@ jobs:
         with:
           args: --no-lockfile
       - run: pnpm test
+    timeout-minutes: 10
+
+  test-scenario:
+    needs:
+      - test
+      - test-no-lockfile
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: wyvox/action-setup-pnpm@v2
+      - run: pnpm tailwind:build
+        working-directory: addon
+      - run: pnpm ember try:one ${{matrix.scenario}}
+        working-directory: addon
+    strategy:
+      fail-fast: false
+      matrix:
+        scenario:
+          - ember-lts-4.4
+          - ember-lts-4.8
+          - ember-release
+          - ember-beta
+          - ember-canary
+          - embroider-safe
+          - embroider-optimized
     timeout-minutes: 10
 
   # test:
