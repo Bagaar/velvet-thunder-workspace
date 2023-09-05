@@ -1,0 +1,22 @@
+{
+  "name": "velvet-thunder-workspace",
+  "version": "0.0.0",
+  "private": true,
+  "repository": "https://github.com/bagaar/velvet-thunder-workspace",
+  "license": "MIT",
+  "author": "Bagaar",
+  "scripts": {
+    "lint": "concurrently --group --prefix-colors auto \"npm:lint:*(!fix)\"",
+    "lint:fix": "concurrently --group --prefix-colors auto \"npm:lint:*:fix\"",
+    "lint:format": "prettier . --cache --check",
+    "lint:format:fix": "prettier . --cache --write"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.1",
+    "prettier": "^3.0.3"
+  },
+  "packageManager": "pnpm@8.6.11",
+  "volta": {
+    "node": "18.12.0"
+  }
+}
