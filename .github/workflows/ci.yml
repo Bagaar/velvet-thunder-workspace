@@ -29,6 +29,17 @@ jobs:
       - run: pnpm test
     timeout-minutes: 10
 
+  floating:
+    needs: lint
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: wyvox/action-setup-pnpm@v2
+        with:
+          args: --no-lockfile
+      - run: pnpm test
+    timeout-minutes: 10
+
   # test:
   #   name: Tests
   #   runs-on: ubuntu-latest
